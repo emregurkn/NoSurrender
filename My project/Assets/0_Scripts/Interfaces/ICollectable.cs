@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface ICollectable
 {
-   void Collect();
+   float scaleAmount { get; set; }
+   float animSPeed { get; set; }
+   void IncreaseSize(float scaleAmount,float animSpeed);
 }

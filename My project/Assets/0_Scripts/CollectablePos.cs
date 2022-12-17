@@ -17,6 +17,7 @@ public class CollectablePos : MonoBehaviour
     void Start()
     {
         objectPool = ObjectPool.instance;
+        CollectableRandomPos();
     }
 
     public void CollectableRandomPos()

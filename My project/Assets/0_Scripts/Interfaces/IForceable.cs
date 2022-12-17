@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IForceable 
 {
     Vector3 forceAmount { get; set; }
-    void Force(float forceAmount);
+    void Force(Rigidbody rigidbody,Vector3 forceAmount);
 }

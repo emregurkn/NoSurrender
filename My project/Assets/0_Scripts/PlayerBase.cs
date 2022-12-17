@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using DG.Tweening;
 
 
-[RequireComponent(typeof(Rigidbody),typeof(NavMeshAgent))]
-public abstract class PlayerBase : MonoBehaviour,IMoveable,IForceable,ICollectable
+
+[RequireComponent(typeof(Rigidbody), typeof(NavMeshAgent))]
+public abstract class PlayerBase : MonoBehaviour, IMoveable, IForceable, ICollectable
 {
     #region Variables
     public enum PlayerControllerType
@@ -17,33 +19,59 @@ public abstract class PlayerBase : MonoBehaviour,IMoveable,IForceable,ICollectab
     public float moveSpeed { get; set; }
     public NavMeshAgent navMeshAgent { get; set; }
     public Vector3 forceAmount { get; set; }
+    public float scaleAmount { get; set; }
+    public float animSPeed { get; set; }
 
     public PlayerControllerType playerControllerType;
+    [SerializeField] private DynamicJoystick joystick = null;
     #endregion
 
-    void Start()
+    public virtual void Force(Rigidbody rigidbody,Vector3 forceAmount)
     {
-        
+        navMeshAgent.enabled = false;
+        rigidbody.AddForce(forceAmount,ForceMode.Impulse);
+        navMeshAgent.enabled = true;
     }
 
-    
-    void Update()
+    public virtual void Movement(float movementSpeed)
     {
-        
+        switch (playerControllerType)
+        {
+            case PlayerControllerType.Joystick:
+                navMeshAgent.speed = moveSpeed;
+                PlayerMovement();
+                break;
+
+            case PlayerControllerType.AI:
+                break;
+        }
     }
 
-    public virtual void Force(float forceAmount)
+    public void PlayerMovement()
     {
-        throw new System.NotImplementedException();
+        Vector3 inputVec = new Vector3(joystick.Horizontal, 0, joystick.Vertical);
+        Vector3 setNavmesh = transform.localPosition + inputVec;
+
+
+        if (!navMeshAgent.enabled)
+        {
+            return;
+        }
+        navMeshAgent.SetDestination(setNavmesh);
+        if (joystick.Horizontal != 0 || joystick.Vertical != 0)
+        {
+            Vector3 direction = Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), 10 * Time.deltaTime);
+        }
     }
 
-    public virtual void Movement(float moveSpeed)
+    public void AIMovement()
     {
-        throw new System.NotImplementedException();
+
     }
 
-    public virtual void Collect()
+    public void IncreaseSize(float scaleSize, float animationSpeed)
     {
-        throw new System.NotImplementedException();
+        this.transform.DOScale(scaleAmount, animSPeed).SetEase(Ease.OutElastic);
     }
 }
