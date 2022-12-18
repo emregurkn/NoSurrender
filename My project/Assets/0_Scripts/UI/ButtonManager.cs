@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Button variables and functionalities
+///
+/// Takes care of:
+///     - keeping the variables and functionalities of button
+/// <summary>
+
 public class ButtonManager : MonoBehaviour
 {
     public void PauseGame()

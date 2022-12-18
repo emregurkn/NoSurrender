@@ -4,6 +4,14 @@ using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
 
+/// <summary>
+///     - Player functions and variables
+///
+/// Takes care of:
+///     - manages the player behaviour and sets the variables
+///     - basically same as the ai manager because inherited
+/// <summary>
+
 public class PlayerManager : PlayerBase
 {
     [SerializeField] private float movementSpeed, scaleSize, animationSpeed;
@@ -21,12 +29,12 @@ public class PlayerManager : PlayerBase
 
     void Update()
     {
-        base.CheckPlayableArea();
-        isPlayeable = base.CheckPlayableArea();
+        base.CheckPlayableArea(); 
+        isPlayeable = base.CheckPlayableArea(); 
 
         if (isPlayeable)
         {
-            Movement(movementSpeed);
+            Movement(movementSpeed); 
         }
         else if (!isPlayeable)
         {

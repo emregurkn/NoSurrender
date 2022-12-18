@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
 
+/// <summary>
+///     - AI behaviours
+///
+/// Takes care of:
+///     - manages the ai behaviour and sets the variables
+/// <summary>
+
 public class AIManager : PlayerBase
 {
     [SerializeField] private float movementSpeed, scaleSize, animationSpeed;
@@ -22,17 +29,17 @@ public class AIManager : PlayerBase
     
     void Update()
     {
-        base.CheckPlayableArea();
-        isPlayeable = base.CheckPlayableArea();
+        base.CheckPlayableArea(); //Checks if it is on the playeable are or not before movement function.
+        isPlayeable = base.CheckPlayableArea(); //Sets the bool function to bool variable for if statment
 
         if (isPlayeable)
         {
-            Movement(movementSpeed);
+            Movement(movementSpeed); //Movement function if it is playeable
         }
         else if (!isPlayeable)
         {
-            ClosestObjectManager.instance.objects.Remove(transform);
-            navMeshAgent.enabled = false;
+            ClosestObjectManager.instance.objects.Remove(transform); //If it is not on playeable are, it means it is eliminated.
+            navMeshAgent.enabled = false; //Enable Navmesh so rigidbody can do its job.
             gameObject.SetActive(false);
         }
     }
@@ -47,15 +54,15 @@ public class AIManager : PlayerBase
     {
         if (other.gameObject.CompareTag("Collectable"))
         {
-            scaleAmount = scaleSize;
+            scaleAmount = scaleSize; //We sets the variables.
             animSPeed = animationSpeed;
-            base.IncreaseSize(scaleSize, animationSpeed);
+            base.IncreaseSize(scaleSize, animationSpeed);//Call function that increase size of player and ai
             scaleSize += 0.2f;
         }
 
         if (other.gameObject.CompareTag("Player"))
         {
-            base.Force(other.gameObject); 
+            base.Force(other.gameObject); //Add force function
         }
     }
 }

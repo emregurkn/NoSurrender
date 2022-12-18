@@ -5,16 +5,26 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// Remaining timer variables and functionalities
+///
+/// Takes care of:
+///     - keeping the variables and functionalities of time counter
+/// <summary>
+
+
 public class TimeCounter : MonoBehaviour
 {
     public float timeRemaining;
-    public bool timerOn = false;
+    public bool timerOn = false; //Stop and start remaining time counter.
     public TextMeshProUGUI timerText;
     public Button restartButton;
 
+
     void Start()
     {
-        timerOn = false;
+        timerOn = false; // At the start it is false, because it waits for start timer finish its job.
     }
 
 
@@ -23,7 +33,7 @@ public class TimeCounter : MonoBehaviour
         CalculateRemainingTime();
     }
 
-    public void CalculateRemainingTime()
+    public void CalculateRemainingTime()//Calculate remaining time
     {
         if (timerOn)
         {
@@ -41,7 +51,7 @@ public class TimeCounter : MonoBehaviour
         }
     }
 
-    public void UpdateTimer(float currentTime)
+    public void UpdateTimer(float currentTime)//Set the timer variable as a clock counter
     {
         currentTime += 1;
         float minutes = Mathf.FloorToInt(currentTime / 60);
@@ -50,7 +60,7 @@ public class TimeCounter : MonoBehaviour
         timerText.text = string.Format("{0:00} : {1:00}", minutes, seconds);
     }
 
-    public void SetActiveRestartButton()
+    public void SetActiveRestartButton()//Activate restart button when time is finish.
     {
         restartButton.gameObject.SetActive(true);
     }
