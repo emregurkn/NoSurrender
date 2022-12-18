@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IForceable 
 {
-    Vector3 forceAmount { get; set; }
-    void Force(Rigidbody rigidbody,Vector3 forceAmount);
+    Rigidbody rigidbody { get; set; }
+    void Force(GameObject obj);
 }

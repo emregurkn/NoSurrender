@@ -7,22 +7,38 @@ using DG.Tweening;
 public class PlayerManager : PlayerBase
 {
     [SerializeField] private float movementSpeed, scaleSize, animationSpeed;
-    [SerializeField] private Vector3 forceValue;
-    new Rigidbody rigidbody;
+    [SerializeField] private float maxPos, minPos,forceTime;
+    private bool start;
     void Start()
     {
+        maxMove = maxPos;
+        minMove = minPos;
+        
         rigidbody = GetComponent<Rigidbody>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
 
     void Update()
     {
-        Movement(movementSpeed);
+        base.CheckPlayableArea();
+        isPlayeable = base.CheckPlayableArea();
+
+        if (isPlayeable)
+        {
+            Movement(movementSpeed);
+        }
+        else if (!isPlayeable)
+        {
+            ClosestObjectManager.instance.objects.Remove(transform);
+            navMeshAgent.enabled = false;
+            gameObject.SetActive(false);
+        }
     }
 
     public override void Movement(float movementSpeed)
     {
-        navMeshAgent = GetComponent<NavMeshAgent>();
+        
         moveSpeed = movementSpeed;
         base.Movement(moveSpeed);
     }
@@ -33,14 +49,13 @@ public class PlayerManager : PlayerBase
         {
             scaleAmount = scaleSize;
             animSPeed = animationSpeed;
-            IncreaseSize(scaleSize, animationSpeed);
+            base.IncreaseSize(scaleSize, animationSpeed);
             scaleSize += 0.2f;
         }
 
-        if (other.gameObject.CompareTag("AI"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            forceAmount = forceValue;
-            Force(rigidbody,forceValue);
+            base.Force(other.gameObject);
         }
     }
 }

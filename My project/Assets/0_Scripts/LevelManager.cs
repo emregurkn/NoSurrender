@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    CollectablePos collectablePos;
+    private CollectablePos collectablePos;
+    private ClosestObjectManager closestEnemyCalculator;
+    public int objectSize;
 
-    void Awake()
+    private void Start()
     {
-        collectablePos = CollectablePos.instance;
-    }
-    void Start()
-    {
-        collectablePos.CollectableRandomPos();
+        collectablePos = GetComponent<CollectablePos>();
+        collectablePos.CollectableRandomPos(objectSize);
     }
 }

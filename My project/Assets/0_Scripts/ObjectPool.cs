@@ -16,14 +16,6 @@ public class ObjectPool : MonoBehaviour
     public Dictionary<string, Queue<GameObject>> poolDictionary;
     public List<Pool> pools;
 
-    #region Singleton
-    public static ObjectPool instance { get; private set; }
-    private void OnEnable()
-    {
-        instance = this;
-    }
-    #endregion
-
     void Awake()
     {
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
@@ -44,7 +36,7 @@ public class ObjectPool : MonoBehaviour
     }
 
 
-    public GameObject GetPooledObject(string tag, Vector3 position)
+    public GameObject GetPooledObject(string tag)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
@@ -53,8 +45,9 @@ public class ObjectPool : MonoBehaviour
         }
 
         GameObject objectToUse = poolDictionary[tag].Dequeue();
-        objectToUse.transform.position = position;
         objectToUse.SetActive(true);
+        //objectToUse.transform.position = position;
+        
 
         poolDictionary[tag].Enqueue(objectToUse);
         return objectToUse;
